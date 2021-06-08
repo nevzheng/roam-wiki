@@ -6,7 +6,7 @@
 * OpenAPI
 ** http://github.com/OAI/OpenAPI-Specification
 ** The OpenAPI Specification is a community-driven open specification within the *OpenAPI Initiative*, a Linux Foundation Collaborative Project.
-** OAS defines a standard, programming language-agnostic interface description fro HTTP APIs, which allows both humans and computers to discover and understand the capabiliites of a service without requiring access to source code, additional documentation, or inspection of network traffic.
+** OAS defines a standard, programming language-agnostic interface description fro HTTP APIs, which allows both humans and computers to discover and understand the capabilities of a service without requiring access to source code, additional documentation, or inspection of network traffic.
 ** Use cases of Machine Readable API Definition include:
 + Interactive Documentation
 + Automation of Test Cases
@@ -16,12 +16,12 @@
 ** Requires capabilities of Service is describable by OpenAPI
 ** An opinionated, standardized description, covering REST
 ** Does not mandate specific development processes such as design-first or code-first.
-** OpenAPI is a specification. [[Swagger]] is an implementation.
+** OpenAPI is a specification. [[file:Swagger.org][Swagger Hub]] is an implementation.
 
 * Writing an OpenAPI Specification
-** Some tools Specified in [[Swagger]]: Other Alternatives & Tools
+** Some tools Specified in [[file:Swagger.org][SwaggerHub]]: Other Alternatives & Tools
 ** Reuse Definitions!
 *** Oftentimes the same schema will be repeated throughout an application
 *** DRY up your specification by saving your schemas as components in one file then using `$ref` to pull them into a definition. You can also refer to components in other files or APIs
 *** https://stoplight.io/blog/reuse-openapi-descriptions/
-* OpenAPI Documentation: swagger.io/docs also has [[Swagger]] docs
+* OpenAPI Documentation: swagger.io/docs also has [[file:Swagger.org][Swagger Hub]] docs

@@ -1,5 +1,7 @@
 #+TITLE: Swagger
 #+roam_alias: "SwaggerHub" "Swagger Hub"
+#+AUTHOR: Nevin Zheng
+#+LAST MODIFIED:
 
 * https://swagger.io/blog/api-strategy/difference-between-swagger-and-openapi/
 * Swagger is a set of tools for implementing [[[file:OpenApi.org][OpenApi]]]
@@ -49,4 +51,4 @@
 *** Can only PUSH to github
 *** CAN COPY/PASTE from local Editor
 
-* Swagger Docs: Swagger.io/docs also has [[openAPI]] docs
+* Swagger Docs: Swagger.io/docs also has [[file:OpenApi.org][OpenApi]] docs
