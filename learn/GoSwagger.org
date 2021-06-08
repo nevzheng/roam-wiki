@@ -1,0 +1,45 @@
+#+TITLE: Go Swagger
+#+AUTHOR: Nevin Zheng
+#+LAST MODIFIED: Tue Jun  8 15:46:38 2021
+
+* Support for [[file:OpenApi.org][openAPI]] and [[file:Swagger.org][Swagger Hub]] in GoLang
+** go-swagger
+*** No Plans To Support OpenAPI spec 3.0
+*** Capabilities:
+**** Server Generation from OAS
+**** Client Generation from OAS
+**** Generates a CLI from OAS
+**** Supports Most Features offered by roam:jsonschema and [[file:Swagger.org][Swagger]], including poly-morphism
+**** Can Generate roam:Swagger from annotated go code
+**** Various Tools
+**** Good Customization, with vendor extensions and customizable templates
+*** https://goswagger.io/
+*** https://github.com/go-swagger/go-swagger
+*** https://github.com/go-swagger/go-swagger/issues/1122
+
+** oapi-codegen
+*** https://github.com/deepmap/oapi-codegen
+*** A set of utilities for generating Go boilerplate code for services based on [[file:OpenApi.org][OpenApi]] Version 3
+*** It's tedious to generate Go models which precisely correspond to OpenAPI specifications. So Autogen them
+*** roam:Echo is default http router, roam:Chi is supported as alternative
+*** Workflow
+**** 1. Pull Your openAPI Specification
+**** 2. Run `oapi-codegen [openapi.yml] > [targetfile]`
+**** 3. The `components/schema` section in the OpenAPI spec defines reusable objects. Go Types are generated for these.
+**** 4. `oapi-codegen` also implements a Server Interface which is supposed to handle the encode/decode step.
+**** 5. Also provides a client generation library for making calls from go
+*** Security Providers
+**** default security providers are provided for client code
+*** The `--subset` flag lets you specify a subset of code to generate. EX Only generate types  🙌
+*** Other Useful Flags
+
+** roam:go-kit
+*** No First Party Support
+**** https://github.com/go-kit/kit/issues/185
+
+
+* Notes
+** The quality of auto generated swagger code might not be great. Would need to try out different generators.
+** I am thinking about rolling my own go kit implementation while using swagger as a documentation tool.
+** oapi-codegen is good. It extracts the types for you. However, we don't need the Server Definitions that it provides if we use go kit. Maybe I can think of a way to use it.
+** Can use the microgen generator see roam:gokit
