@@ -1,0 +1,19 @@
+#+TITLE: OpenApi
+#+roam_alias: "OAS"
+#+AUTHOR: Nevin Zheng
+#+DATE: Tue Jun  8 11:23:25 2021
+
+* OpenAPI
+** http://github.com/OAI/OpenAPI-Specification
+** The OpenAPI Specification is a community-driven open specification within the *OpenAPI Initiative*, a Linux Foundation Collaborative Project.
+** OAS defines a standard, programming language-agnostic interface description fro HTTP APIs, which allows both humans and computers to discover and understand the capabiliites of a service without requiring access to source code, additional documentation, or inspection of network traffic.
+** Use cases of Machine Readable API Definition include:
++ Interactive Documentation
++ Automation of Test Cases
++ Code Generation for Documentation, Clients, & Servers
+** OpenAPI Documents describe API services and are either represented at YAML or JASON documents.
+*** These documents may wither be produced and served statically or be generated dynamically from an application
+** Requires capabilities of Service is describable by OpenAPI
+** An opinionated, standardized description, covering REST
+** Does not mandate specific development processes such as design-first or code-first.
+** OpenAPI is a specification. [[Swagger]] is an implementation.
