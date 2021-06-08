@@ -1,0 +1,66 @@
+#+TITLE: GoKit
+#+roam_alias: "gokit" "go-kit"
+#+AUTHOR: Nevin Zheng
+#+ LAST MODIFIED:Tue Jun  8 16:47:58 2021
+
+* go-kit
+** A Programming tool kit for building microservices (or elegant monoliths) in Go
+** Hexagonal Architecture
+** Solves common problems in distributed systems and application architecture
+** Motivation
+*** When gokit was conceived, it was under represented as the language of the server
+*** Go needed a tool kit to help if compete against established JVM Stacks
+** Goals
+*** Operate in heterogeneous Service Oriented Architecture (SOA), w/ mostly non go services
+*** RPC is the primary messaging pattern
+*** Pluggable serialization and Transport: Not just JSON over HTTP
+**** gRPC, GraphQL, XML, etc
+*** Operate within existing infrastructure, no mandates for specific tools/tech
+** Non Goals
+*** Supporting non RPC messaging (for now): MPI, PUB/SUB
+*** Reimplmenting functionality that can be provided by adapting already existing software
+*** Having opinions on operational concerns. deployment, configuration, process supervision, orchestration, etc
+** Docs
+*** http://gokit.io
+*** https://github.com/go-kit/kit
+** Videos
+*** Good Talk by Creator: https://www.youtube.com/watch?v=NX0sHF8ZZgw
+*** Good Demo by Tensor Programming: https://www.youtube.com/watch?v=sjd2ePF3CuQ
+
+* go-kit generators
+** Microgen
+*** Overly prescriptive project structure
+*** Does have a good set of supported features
+*** Doesn't support modules
+*** Not Maintained!!
+*** https://github.com/devimteam/microgen/issues/69
+*** https://github.com/devimteam/microgen
+*** DO NOT USE
+** GoKit CLI
+*** Great at generating boilerplate
+*** Supports Different Transport Types
+*** https://github.com/GrantZheng/kit
+** marvin
+*** NYtimes
+*** Really Weird readme
+*** Works well with google app engine
+*** Documentation on github doesn't really explain
+*** https://github.com/nytimes/marvin
+** MGA: Modern Go Application Tool
+*** Overly prescriptive
+*** Lots of Batteries: go-kit generator, testify mock generator, event dispatcher/handler generator compatible watermill
+*** https://github.com/sagikazarmark/mga
+** truss
+*** Defines Service with gRPC and protoc buffers. Then Truss generates the whole service
+*** Has Fun Picture
+*** https://github.com/metaverse/truss
+*** Related: Convert [[file:OpenApi.org][openAPI]] to Protoc
+**** https://github.com/OpenAPITools/openapi-generator
+
+* Generating a Go Kit application that Supports openAPI
+** Method 1: oapi-codegen + go kit
+*** Use oapi-codegen to extract go types from the OAS
+*** Run the types through go kit to produce your server
+** Method 2: openapi-codegen + Truss
+*** Use openapi-codegen to convert your types to proto buffer
+*** Use Truss to auto generate your service
