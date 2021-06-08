@@ -36,8 +36,17 @@
 *** Document Validation
 *** Request Response Validation
 *** https://github.com/apigee-127/sway
-** [swagger-cli]
+** [[swagger-cli]]
 *** Validation
-*** Split/Merge your spec accross multiple files
+*** Split/Merge your spec across multiple files
 *** Supports OpenAPI 2 & 3
 *** https://www.npmjs.com/package/swagger-cli
+
+
+* Notes on Tools
+** SwaggerHub is good but it locks you in
+*** Can't PULL from github
+*** Can only PUSH to github
+*** CAN COPY/PASTE from local Editor
+
+* Swagger Docs: Swagger.io/docs also has [[openAPI]] docs

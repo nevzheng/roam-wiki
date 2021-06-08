@@ -1,5 +1,5 @@
 #+TITLE: OpenApi
-#+roam_alias: "OAS"
+#+roam_alias: "OAS" "openAPI"
 #+AUTHOR: Nevin Zheng
 #+DATE: Tue Jun  8 11:23:25 2021
 
@@ -19,8 +19,9 @@
 ** OpenAPI is a specification. [[Swagger]] is an implementation.
 
 * Writing an OpenAPI Specification
-** Some tools Specified in [Swagger]: Other Alternatives & Tools
+** Some tools Specified in [[Swagger]]: Other Alternatives & Tools
 ** Reuse Definitions!
 *** Oftentimes the same schema will be repeated throughout an application
-*** DRY up your specification by saving your schmeas as components in one file then using `$ref` to pull them into a definition. You can also refer to components in other files or APIs
+*** DRY up your specification by saving your schemas as components in one file then using `$ref` to pull them into a definition. You can also refer to components in other files or APIs
 *** https://stoplight.io/blog/reuse-openapi-descriptions/
+* OpenAPI Documentation: swagger.io/docs also has [[Swagger]] docs
