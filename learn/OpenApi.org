@@ -17,3 +17,10 @@
 ** An opinionated, standardized description, covering REST
 ** Does not mandate specific development processes such as design-first or code-first.
 ** OpenAPI is a specification. [[Swagger]] is an implementation.
+
+* Writing an OpenAPI Specification
+** Some tools Specified in [Swagger]: Other Alternatives & Tools
+** Reuse Definitions!
+*** Oftentimes the same schema will be repeated throughout an application
+*** DRY up your specification by saving your schemas in one file then using `$ref` to pull them into a definition
+*** https://stoplight.io/blog/reuse-openapi-descriptions/

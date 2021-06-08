@@ -1,0 +1,43 @@
+#+TITLE: Swagger
+#+roam_alias: "SwaggerHub" "Swagger Hub"
+
+* https://swagger.io/blog/api-strategy/difference-between-swagger-and-openapi/
+* Swagger is a set of tools for implementing [[[file:OpenApi.org][OpenApi]]]
+
+* Pro/Paid Tools
+** SwaggerHub: Collaborative Cloud Platform for designing & documenting all your REST APIs
+*** Cool API Auto Mocking feature! Great for testing and speeds up development
+** SwaggerHub Enterprise: Swagger Hub but with some more enterprise features
+** Swagger Inspector: Test and Generate API Definitions from browser in seconds
+
+* OpenSource Tools
+** Swagger CodeGen: Generate Server Stubs and client SDKs from OpenAPI Specification definitions
+** Swagger Editor: API Editor for desigining API's with the OpenAPI specification
+** SwaggerUI: Visualize OpenAPI Specification definitions in an interactive UI
+
+* Other Editors
+** VSCode
+*** Extension, "OpenAPI (Swagger Editor)"
+** Vim:
+*** https://github.com/xavierchow/vim-swagger-preview
+** Emacs:
+*** flycheck-swagger-cli
+**** Emacs Flycheck support for [swagger-cli]
+**** https://github.com/magoyette/flycheck-swagger-cli
+
+* Other Alternatives & Tools:
+** https://stackoverflow.com/questions/36634281/list-of-swagger-ui-alternatives
+** https://www.npmjs.com/package/swagger-tools Deprecated?
+** sway
+*** Supports openAPI 2 & 3 Depending on Branch
+*** Supports Local and Remote Docs
+*** Resolve Local and Remote References
+*** Builds Object Models
+*** Document Validation
+*** Request Response Validation
+*** https://github.com/apigee-127/sway
+** [swagger-cli]
+*** Validation
+*** Split/Merge your spec accross multiple files
+*** Supports OpenAPI 2 & 3
+*** https://www.npmjs.com/package/swagger-cli
