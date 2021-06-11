@@ -3,7 +3,7 @@
 #+ROAM_TAGS: microservices servicemesh sidecar
 #+LAST MODIFIED:Fri Jun 11 14:28:57 2021
 
-* roam:microservices
+* [[file:Microservices.org][Microservices]]
 ** Benefits:
 *** Faster Delivery: Small Service Size encourages frequent releases with less risk
 *** Isolation: Single Service Faults "cannot" crash entire system: Depends on service
