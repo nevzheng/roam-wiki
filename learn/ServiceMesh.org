@@ -61,7 +61,7 @@
 ** Services should only run Business Logic
 ** Sidecars
 *** Services add a dependency/Module called a sidecar
-*** Services delegate commounication/routing/loadbalancing to the Sidecar
+*** Services delegate communication/routing/load balancing to the Sidecar
 *** Determine what communication protocol to use: gRPC, HTTP, etc
 ** Control Plane
 *** In addition to the side car there could be a control plane

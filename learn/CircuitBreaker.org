@@ -1,0 +1,26 @@
+#+TITLE: Circuit Breaker
+#+AUTHOR: Nevin Zheng
+#+LAST MODIFIED:Fri Jun 11 15:28:29 2021
+#+roam_tags: circuitbreaker microservices
+
+* [[file:CircuitBreaker.org][Circuit Breaker]]
+** A Pattern in [[file:Microservices.org][microservices]]
+** Microservices typically call other microservices
+** If a downstream service is down, why should you try again
+** Need a way to detect an issue and stop making requests
+** A circuit breaker is a module that detects issues and responds with a default response
+** This also allows downstream services to recover if they are experiencing an intermittent issue
+** If not properly handled, a cascading failure could be triggered
+** It might be better to return default responses than having your system crash
+** Implement a switch to ALLOW/STOP requests
+** Make decsion based on a moving window of success/failure and some success threshold
+** Allow requests again after a threshold
+** Also add "Half Open" a partial state to allow for gradual spinup to normal after a a break
+
+* References:
+** Defog Tech: [[file:CircuitBreaker.org][Circuit Breaker]] Pattern: https://www.youtube.com/watch?v=ADHcBxEXvFA
+** Hystirx, java, netflix, not actively developed
+** resilience4j, java
+** golang:
+*** gobreaker
+*** go-circuitbreaker

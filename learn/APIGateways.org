@@ -22,8 +22,6 @@ Key Pattern in roam:microservices
 
 ** Caching
 *** API Gateway can act as a cache for requests
-***
-
 ** Static Content
 *** Static Content Could be served by the Gateway instead of an underlying static content service
 *** Could Also delegate to a CDN
