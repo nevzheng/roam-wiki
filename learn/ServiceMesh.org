@@ -72,3 +72,7 @@
 *** Sidecars could be a single point of failure. a mistake in configuration in a common sidecar could crash your service
 ** TOOLS / LIBS
 *** lstio (control plane) + envoy (sidecars)
+
+
+References:
+DefogTech: What is a service mesh https://www.youtube.com/watch?v=QiXK0B9FhO0

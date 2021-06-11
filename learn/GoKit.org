@@ -18,7 +18,7 @@
 *** Operate within existing infrastructure, no mandates for specific tools/tech
 ** Non Goals
 *** Supporting non RPC messaging (for now): MPI, PUB/SUB
-*** Reimplmenting functionality that can be provided by adapting already existing software
+*** Re implementing functionality that can be provided by adapting already existing software
 *** Having opinions on operational concerns. deployment, configuration, process supervision, orchestration, etc
 ** Docs
 *** http://gokit.io
@@ -57,7 +57,7 @@
 *** Related: Convert [[file:OpenApi.org][openAPI]] to Protoc
 **** https://github.com/OpenAPITools/openapi-generator
 
-* Generating a Go Kit application that Supports [[file:OpenApi.org][openAPI]]
+* Generating a Go Kit application that Supports [[file:OpenApi.org][oandpenAPI]]
 ** Method 1: oapi-codegen + go kit
 *** Use oapi-codegen to extract go types from the OAS
 *** Run the types through go kit to produce your server
