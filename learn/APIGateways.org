@@ -1,8 +1,10 @@
 #+TITLE: APIGateways
 #+AUTHOR: Nevin Zheng
 #+LAST MODIFIED: Wed Jun  9 10:31:25 2021
+#+roam_tags: microservices apigateway
 
 * API Gateways
+Key Pattern in roam:microservices
 ** Security
 *** API Gateways Separate out cross cutting concerns
 *** SSL Certificates/Rotation
@@ -33,7 +35,7 @@
 *** Separation of Concerns
 
 ** Load Balancing
-*** Popular Requests can be handled with caching and Load Balancing to Replicas of a service
+*** TODO Popular Requests can be handled with caching and Load Balancing to Replicas of a service
 
 ** A/B Testing / Canary Testing
 *** Can Expose different Versions of the same service to different clients

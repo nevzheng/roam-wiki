@@ -1,0 +1,74 @@
+#+TITLE: Service Mesh
+#+AUTHOR: Nevin Zheng
+#+ROAM_TAGS: microservices servicemesh sidecar
+#+LAST MODIFIED:Fri Jun 11 14:28:57 2021
+
+* roam:microservices
+** Benefits:
+*** Faster Delivery: Small Service Size encourages frequent releases with less risk
+*** Isolation: Single Service Faults "cannot" crash entire system: Depends on service
+*** Scaling: Can scale individual services based on use
+*** Culture: Well definied ownership, high trust team
+*** Flexibility: Polyglot services, databases, etc.
+
+** Service Discovery
+*** Centralized
+**** Service Advertises availability to Central Service Registry
+**** Clients Query registry
+**** Single Point of Failure, but can use Fault-Tolerance Techniques: Replication, etc
+**** Advertise at minimum IP address and port. Could also advertise other meta data and supported services
+
+*** Distributed
+**** No King
+**** Services communicate with each other
+
+** Load Balancing
+*** How to effectively distribute requests among Replicas of a Service
+*** Ribbon / Client Library: Code that lives on client that distributes request
+*** DNS Resolution / Proxies: middle men/agents that dispatch requests
+
+** Canary/Rolling Deploys/Testing
+*** A Routing solution could enable gradual roll out of a newer version.
+*** Service does not have to go down
+
+** Fault Tolerance
+*** Rolling Deployment/Upgrades
+*** Circuit Breaking
+*** Replication
+*** Rollback
+
+** Distributed Tracing / Telemetrics
+*** How to trace a single request across multiple services
+*** Use a library
+*** Add Trace ID, Span ID, Parent Span ID
+
+** Security (mTLS, policies, patches)
+*** Mutual TLS between other services
+
+
+** Granularity
+** Bounded Contexts
+*** Inter Domain vs Intra-Domain context.
+**** Expose different APIs to Inter vs Intra
+
+** Data modeling
+** Independently Releasable?
+** Service Contracts
+** Smart Services, dumb pipes
+
+* Service Mesh
+** Do not burden code with infrastructure related decisions
+** Services should only run Business Logic
+** Sidecars
+*** Services add a dependency/Module called a sidecar
+*** Services delegate commounication/routing/loadbalancing to the Sidecar
+*** Determine what communication protocol to use: gRPC, HTTP, etc
+** Control Plane
+*** In addition to the side car there could be a control plane
+*** Control Planes/ Control Towers communicate with side cars and control/configure them
+*** Instructions / Policies / Certs/ Configurations
+*** Directing Traffic
+** CON:
+*** Sidecars could be a single point of failure. a mistake in configuration in a common sidecar could crash your service
+** TOOLS / LIBS
+*** lstio (control plane) + envoy (sidecars)
