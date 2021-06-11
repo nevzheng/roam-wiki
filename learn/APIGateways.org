@@ -1,0 +1,75 @@
+#+TITLE: APIGateways
+#+AUTHOR: Nevin Zheng
+#+LAST MODIFIED: Wed Jun  9 10:31:25 2021
+
+* API Gateways
+** Security
+*** API Gateways Separate out cross cutting concerns
+*** SSL Certificates/Rotation
+*** SSL Termination: Switch from HTTPS to HTTP in a datacenter
+*** DDoS protection/throttling
+*** Authentication: Is a user who they say they are
+*** Authorization: Is a user allowed to do X
+
+** Routing
+*** Single Consistent Interface to multiple microservices
+*** Flexibility of implementation
+*** Integration of Heterogeneous Services
+*** Reverse Proxying: Gateway can act on behalf of Client. Fanning-Out or Consolidating Requests
+**** Adapter Pattern: Fanning out / Converting a request
+
+** Caching
+*** API Gateway can act as a cache for requests
+***
+
+** Static Content
+*** Static Content Could be served by the Gateway instead of an underlying static content service
+*** Could Also delegate to a CDN
+
+** Backend For Front End Pattern
+*** Heterogeneous Gateways for Different Frontends
+*** iOS, Android, Web might all need different APIs
+*** Mobile and Desktop could get their own Gateways
+*** Separation of Concerns
+
+** Load Balancing
+*** Popular Requests can be handled with caching and Load Balancing to Replicas of a service
+
+** A/B Testing / Canary Testing
+*** Can Expose different Versions of the same service to different clients
+
+** Different Protocols
+*** Gateway can ADAPT different protocol requests into the backend.
+*** GraphQL, Websockets, QUIC, HTTP1/2/3
+
+** Usage Metering
+*** Can charge for Usage / Number of calls
+
+** Monitoring
+*** Gateway is single entry point and has insight into request latency, usage, throughput, etc.
+
+** Cons
+*** Single Point of Failure
+**** Not Actually a big deal
+***** Fault Tolerance Techniques: Replication
+*** Additional Hop / Routing Latency
+**** How fast does your service need to be?
+**** Improve your network. Data center networks are fast
+
+* API Gateway Software
+** Self Managed
+*** Apache
+*** HAProxy
+*** NGINX
+*** Spring Cloud Gateway
+*** Zuul by Netflix
+
+** Cloud Services
+*** AWS API Gateway
+*** Azure API Gateway
+*** Google Cloud Endpoints
+*** Apigee
+
+** Golang API Gateways
+*** luraprojact/lura
+*** motivlabs/janus
