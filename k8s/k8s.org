@@ -1,0 +1,291 @@
+#+TITLE: K8s
+
+* What is Kubernetes?
+** Open source container orchestration tool developed by Google
+** Helps you manage containerized applications in different deployment
+** Need of Orchestration Tool
+*** Trend from Monolith to Microservices
+*** Increased usage of containers. Difficult to Manage
+** Features Offered
+*** High Availability, or no downtime
+*** Scalabilty or high performance
+*** Disaster Recovery: Backup and Restore
+* Kubernetes Components
+** 1 Application per pod, typically. Example "Server pod" and "database Pod"
+** Node
+*** worker Node
+** Pod
+*** Smallest Unit of K8s
+*** Abstraction over a container, container images. Abstraction => Portability
+** K8s offers a network abstraction layer. Each pod gets it's own IP address. NOT the container
+** Pod components are ephemeral, can crash, be killed, moved, load balanced. Upon failure, a new pod with a new ip is spawned
+** Service
+*** Permanent IP Address attached to each pod
+*** Lifecycle of Pod and Service are NOT Connected
+*** For an app to be accessbible from outside the datacenter, need to expose an external service
+*** Internal Service: Not publically accessible
+** Ingress
+*** External Request -> Ingress -> Services
+** Config Map & Secrets
+*** Database URL usually in the built application => Rebuild, push, pull. Lot of work
+*** Config Map: External Configuration of your application
+*** Pod pulls info from config map
+*** Easier Configuration
+*** Secrets: Like Config Map for private/secret data
+*** Data is consumed by application using environment variables or properties file
+** Volumes
+*** Data Storage
+*** Volumes provide persistent storage
+*** Volumes gets attached to pods. Could be local or remote
+*** Differences between K8s Cluster and Storage
+*** K8s does not manage data persistence
+** Deployment
+*** Application can be cloned. Then the ip addresses can be swapped
+*** Services also have a load balancer to distribute requests between replicas
+*** Define a blueprint for pods and then specify how many replicas
+*** Typically create _Deployments_
+** Stateful Set
+*** Databases can't be replicated via Deployments/Replicas. They have state
+*** Stateful Set is used for DB replication
+*** Ensures synchronized Access for stateful applications
+*** Deploying with Stateful Set is not easy relative to Deployments
+*** DBs are often hosted outside k8s cluster
+** K8s' Architecture
+*** Worker Machine in K8s Cluster
+**** Each Node has multiple pods
+**** 3 processes must be installed on every Node
+*** 3 Processes must be installed and running on each node
+**** Container Runtime
+***** EX Docker
+***** Manages Containers
+**** Kubelet
+***** Interacts with container and node
+***** Implements the configuration file
+**** Applications typically have multiple nodes
+**** Nodes are same and replicated
+**** Each node has replicas of the same containers
+**** Services Loadbalance between replicas
+**** KubeProxy
+***** Installed on each node
+***** Ensures communication occurs in performant manner with low overhead
+*** Master Servers/ Master Processes/ Master Nodes
+**** Schedules Pods
+**** Monitors
+**** Reschedules/Restarts Pods
+**** Joining a New Node
+**** 4 Processes run on every master node
+***** API Server
+****** Controls the Cluster
+****** Cluster Gateway
+****** Authentication
+****** 1 Entrypoint into Cluser
+***** Scheduler
+****** Intelligently schedules pods, optimizing resource usage
+****** Only makes the decision
+****** Kubelets will receive requests from scheduler and implments them
+***** Controller Manager
+****** Detects state changes, crashes, etc
+****** Detects faults and recovers
+****** Asks scheduler to schedule a new pod
+***** etcd
+****** Key Value Store of Cluster State
+****** Cluster Changes get stored in etcd
+****** "Cluster Brain"
+****** Configuration data and cluster state
+**** Clusters typically replicate masters. Client requests are load balanced
+***** etcd forms distributed storage across master replicas
+**** Example Cluster:
+***** 2 Masters and 3 Worker Nodes
+***** Masters typically need fewer resources than workers
+***** Horizontally scaling Masters and Workers
+
+* minikube & kubectl: Local Setup
+** Typical Production Cluster Setup:
+*** 2 Masters & Multiple Worker Nodes
+*** Difficult and Hard to Test
+** Minikube
+*** 1 Node Cluster. Master Processes and Worker Processes on 1 Node
+*** Will Run via Virtual box or other hypervisor
+*** Great for testing
+** kubectl
+*** Command line tool for kubernetes cluster
+*** kubectl is a commandline tool for communicating with the Api Server
+*** Interacts with ANY K8s cluster
+** Installation
+*** `pacman -S minikube kubectl`
+*** `minikube start`
+* Kubectl Usage
+** CRUD
+*** Create Deployment: `kubectl create deployment [name]`
+*** Edit   Deployment: `kubectl edit deployment [name]`
+*** Delete Deployment: `kubectl delete deployment [name]`
+** Status of different k8s components
+*** `kubectl get nodes | pod | services | replicaset | deployment`
+** Debugging Pods
+*** Log to Console: `kubectl logs [podname]`
+*** Get Interactive Terminal: `kubectl exec -it [pod name] -- bin/bash`
+** Creating a Deployment
+*** Can't create pods directly. Have to create Deployments
+*** Images are blueprints for creating pods
+** Replicasets
+*** Can Manage through kubectl
+*** BUT Typically done through blueprints
+** Using Config Files
+*** `kubectl apply -f [config.yaml]`
+* YAML Configuration in Kubernetes
+** Kinds: Deployment vs Service
+** Three Parts of Configuration File
+*** 1. Metadata: name,
+*** 2. Specification
+**** attributes specific to kind
+*** 3. Status: Added by Kubernetes
+**** K8s detects any difference between current state and specification
+** all config info is stored inside etcd
+** Connecting Deployments to Service to Pods
+*** Deployments Manage Pods
+*** In the Deployment config file, under spec there is a template section, which provides the configuration/blueprint for pods
+*** Pods created by a template, get a label. "Selector" and match label group the pods together. then the selector in the service config file, ties them all together
+*** Services will forward requests to targetPort. Port is what gets exposed to clients
+** Config files should be stored with code. "Infrastructure as Code"
+* YAML supports multiple documents in a single file
+** Separate  with "---"
+** Useful for keeping Deployment and Service Configurations together
+
+* K8s Namespaces
+** Organize Resources in Namespaces
+** Virtual clusters inside a clusters
+** 4 Default Namespaces
+*** kube-system: Do not modify. Contains Master and Kubectl processes, System processes
+*** kube-public: Publically Accessible Data
+*** kube-node-lease: Holds info about node heartbeats/ availability
+*** default: Where resources are placed if namespace not specified
+** `kubectl create | edit | delete namespace [name]`
+** Can Also use a Namespace configuration file
+** Scenario 1: Resources grouped in Namespaces
+*** Database, Monitoring, etc
+** Scenario 2: Different namespaces for differnt teams
+*** Group Resources into different namespaces
+** Scenario 3: Resource Sharing: Staging and Development
+*** Deploy in 1 cluster, and use in different environments
+** Scenario 4: Blue Green Deployment
+*** Shakedown. Share Resources
+** Officially: "Should not use namespaces for smaller projects and n<10 users"
+** But it might be a good idea to keep organized at the start
+** Can control resource allocation by namespace. Good for making sure each team/space gets its fair share
+** Use Cases:
+1. Structure your components
+2. Avoid Conflicts between teams
+3. Share Services between different environments
+4. Access and Resource Limits on Namespaces Level
+** You can't access most resources from another namespace. Has to be publically exposed via service
+*** Each Namespace must define its own config map
+*** Each Namespace must define its own secrets
+*** Services can expose configuration information to other namespaces
+** Some Resources can't be placed in a namespace
+*** Can't be isolated
+*** Live Globally in cluster
+*** System Volume, Node
+*** `kubectl api-resources --namespaced=false`
+** `kubectl apply -f [config file] --namespace=my-namespace`
+** add a `namespace` field to the `metadata` section of a config file
+** `kubens` is a tool that "Changes active namespace" from 'default' to something else
+
+* K8s ingress
+** External Services vs Ingress
+*** External Services, good for testing. Ip address looks weird
+** What is Ingress?
+*** A Component that exposes your services your cluster provides
+*** Basically a proxy
+** YAML Configuration
+*** kind: Ingress
+*** Routing Rules: Map HTTP path to an internal service
+** Ingress Controller
+*** You need an Ingress Controller Pod which evaluates and processes Ingress rules
+*** Evaluates all the Rules
+*** Manages Redirections
+*** Entrypoint to Cluster
+*** K8s Nginx Ingress Controller and Others
+** Environment on which K8s Runs
+*** Cloud Providers w/ K8s solutions and Virtualized Load Balancers
+**** Cloud Load Balancer Directs to Ingress Controller Pod: Entrypoint
+*** Bare Metal
+**** Entrypoint: need to configure your own entrypoint
+**** Public IP Address, open ports, entrypoint to cluster
+** TLS Certs for HTTPS can be configured by adding tls secretName to the Ingress configuration which accesses the secret store
+
+* Helm
+** k8s package manager
+** Packages YAML Files and distributes them in public and private repositories
+** Example: You want to deploy Elastic Stack for logging.
+*** It has a lot of different components
+*** Helm can pull the whole config for you, saving a lot of effort
+** Helm Hub
+** Public Registries, Private Registries
+** A Templating Engine Good for CI/CD
+** Microservices are similar, image name and version can differ. Just Use a Templating Engine
+** Can Deploy to Different Environments
+** Release Management
+** Helm Charts
+*** Bundle of YAML files. Configuration for a deployment etc.
+** Tiller?
+*** Helm Version 2. helm client/cli sends request to tiller which executes the commands
+*** Security Issues. Removed in Version 3
+
+* K8s Volumes
+** k8s no data persistence out of box
+** Requirements
+*** 1. Need storage that doesn't depend on pod lifecycle
+*** 2. Storage must be available on all nodes
+*** 3. Storage needs to survive even if cluster crashes
+** Persistent Volumes
+*** Can be Local or Remote
+*** Storage: External Plugin to the Cluster
+** Local vs Remote Volume types
+*** Local violates reqs 1 and 2
+** Persistent Volumes are not Namespaced
+** Persistent Volumes represent CPU and Memory Resources and must exist before dependents spin up
+** K8s admin: Configure resource and components
+** K8s user: Consumer the components, Application has to claim persistent volume. Component: PVC: Persistent Volume Claim
+** Claims must be in the same namespace as the consuming pod
+** ConfigMap and Secret are also types of Persistent Volumes
+* Storage Class
+** Managing PVs at scale can be hard to manage
+** Storage Class is a component that dynamically allocates PVs whenever PersistentVolumes claim Storage
+* Stateful Set
+** Examples: Databases, application that store data
+** Stateless Apps are deployed using Deployment. No state so can be replicated
+** Stateful Apps are deployed using StatefulSet.
+** Replicating Stateful Apps is more difficult and has more requirements
+*** Stateful Replica Pods are note identical and have their own identity.
+*** Stateful pods are created from the same spec. upon death, another replica is spawned w/ the same identity as the one that just died
+*** One Configuration for reading/writing data to mysql. 1 Master RW, 2 Replicas, R only
+*** Continuous synchronization of data
+** Pod State
+*** each pod gets a PV, and the PV contains Data and the pod state
+** Pod ID
+*** StatelessApp: Random hash name
+*** StatefulSet: Fixed ordered names
+*** Each StatefulSet pod gets their own DNS name. Sticky Identities. Retain State and Role
+
+* K8s Services
+** Each Pod has its own ip address, but pods are epehemeral so their ip addresses can change
+** Services provide stable IP Addresses and Loadbalancing
+** Abstraction and Looser Coupling for dependents
+** ClusterIP
+*** EX: Microservice app w/ a sidecar container that collects logs
+*** Nodes are assigned a Range of IP addresses
+*** Multiport Services
+** Headless
+*** Talk Directly to a pod w/o a proxy
+*** StatefulSet pods
+*** Clients need to know ip addresses of each pod
+*** Set ClusterIP to None. then dns lookup will return pod ip address instead of the cluster ip
+** NodePort
+*** Creates a port that is open on each worker node in cluster. only accessible in cluster
+*** Insecure
+** LoadBalancer
+*** A service becomes accessible externally through a cloud providers load balancer
+
+
+* References
+** Kubernetes Tutorial for Beginners: https://www.youtube.com/watch?v=X48VuDVv0do
