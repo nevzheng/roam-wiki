@@ -1,0 +1,178 @@
+#+TITLE:  Terraform
+
+* Terraform
+** Terraform is an open-source infrastructure as code software tool that enables you to safely and predictably create, change, and improve infrastructure
+** Terraform is _declarative_. A goal is specified and Terraform determines a plan to reach the goar.
+
+* Installation
+** `brew install terraform`
+** `pacman -S terraform`
+
+* Provider Documentation on Hashicorp docs is very helpful
+
+* References
+** Terrraform Course: https://www.youtube.com/watch?v=SLB_c_ayRMo
+** Hashicorp Terraform: https://www.terraform.io/
+
+
+* Terraform Basics and GKK, K8s, and K8s Operator with Terraform
+** Terraform is an infrastructure as code application that enables operators to create and maintain infrastructure components predictably
+** Terraform uses Providers. There are many different types of providers from AWS/GCP/Azure to smaller vendors
+** TF is written in Golang, but TF scripts are implemented in HashiCorp Configuration Language
+** Variables, Interpolation
+* Example
+#+begin_src terraform
+provider "google" {
+  project = var.project_id
+  region  = var.project_region
+  # credentials are provided by either env vars or authentication by the gcloud binary
+}
+
+provider "google-beta" {
+  project = var.project_id
+  region  = var.project_region
+  # credentials are provided by either env vars or authentication by the gcloud binary
+}
+
+terraform {
+
+  required_providers {
+    google         = "~> 3.16.0"
+    google-beta    = "~> 3.16.0"
+    http           = "~>1.2.0"
+    kubernetes     = "~>1.11.3"
+    null           = "~>2.1.2"
+  }
+
+  required_version = "~> 0.12.28"
+
+}
+
+# Look up components that others have already created
+# registry.terraform.io
+module "gke_network" {
+  source  = "terraform-google-modules/network/google"
+  version = "2.4.0"
+
+  project_id   = var.project_id
+  network_name = var.project_prefix
+
+  subnets = {
+    subnet_name   = local.subnet_name
+    subnet_ip     = "10.0.0.0/24"
+    subnet_region = var.project_region
+  }
+  secondary_ranges = {
+    "${local.subnet_name}" = [
+      {
+        range_name    = "ips-pods"
+        ip_cidr_range = "10.1.0.0/16"
+      }
+    ]
+  }
+}
+
+module "gke_cluster" {
+  source   = "terraform-google-modules/kubernetes-engine/google"
+  version  = "10.0.0"
+
+  add_cluster_firewall_rules = true
+  create_service_account = true
+  description = "GKE Demo for HUG Istanbul"
+  disable_legacy_metadata_endpoints = true
+  # ...See full Code examples
+}
+
+#+end_src
+
+* Using Shell Commands
+#+begin_src shell
+  terraform plan                   # Create Plan and output to stdout
+  terraform plan -out="gke.tfplan" # Record the plan for review & maybe versioning
+
+  terrafrom apply                  # Apply the current tf file
+  # Use the -auto-approved flag when using tf apply without a planfile
+
+  terraform apply "gke.tfplan"     # Apply a tfplan
+
+  # terraform.tfstate is a file that is produced by apply.
+  # It represents the state of your infrastructure
+  # DO NOT COMMIT TO VCS
+  # Keep in GCS Bucket, or S3, some protected store
+  # You can Set up a "Terraform Backend": https://dev.to/loujaybee/should-you-commit-the-terraform-tfstate-file-to-git-5054
+#+end_src
+
+
+* Cool Features
+** Namespaces: Everything has a home
+** Deployments: Declarative updates
+** Services: Exposes Deployments
+** Nodes: Machines
+** Deployments
+*** Consist of one or more pods.
+** Pods
+*** A pod is the smallest deployable and manageable unit of compute in K8s
+*** Pods typically only have one container. BUT you can run 2 if you use the side car pattern
+** k8s gives a standardized why to deploy your infrastructure across a variety of cloud platform
+
+* k8s setup
+#+begin_src terraform
+provider "kubernetes" {
+  load_config_file          = false
+  host                      = "https://${module.gke_cluster.endpoint}"
+  token                     = data.google_client_config.default.access_token
+  cluster_ca_certificate    = module.gke_cluster.ca_certificate
+}
+
+resource "kubernetes_namespace" "beacon" {
+  name = "beacon"
+
+  metadata {
+    name = "beacon"
+  }
+}
+
+resource "kubernetes_deployment" "beacon" {
+  metadata {
+    name = "beacon"
+    namespace = kubernetes_namespace.beacon.id
+  }
+
+  spec {
+    containter {
+      image = "onlydole/beacon:1.19.1"
+      name = "beacon"
+    }
+  }
+}
+
+resource "kubernetes_service" "beacon" {
+  metadata {
+    name = "beacon"
+    namespace = kubernetes_namespace.beacon.id
+  }
+
+  spec {
+    selector{
+      app = kubernetes_deployment.beacon.metadata.0.labels.app
+    }
+  }
+  # ...
+  # port {
+  #   port = 8080
+  #   target_port = 80
+  #   type = "LoadBalancer"
+  # }
+}
+
+# ... More in source
+#+end_src
+
+* References
+** slides: [[http://hashi.co/tf-gke-k8s]]
+** code: [[http://hashi.co/tf-gke-k8s-code]]
+** guides: [[http://hashi.co/tf-learn-k8s]]
+** forums: [[http://hashi.co/tf-k8s-forum]]
+** https://www.youtube.com/watch?v=PH1oU4TIb0A
+** https://github.com/GoogleCloudPlatform/terraformer
+** https://github.com/hashicorp/terraform-provider-kubernetes-alpha
